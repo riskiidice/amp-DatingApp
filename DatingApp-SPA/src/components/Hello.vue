@@ -1,12 +1,9 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <hr>
-    <ul>
-      <li v-for="(value,index) in allValues" :key="value.id">
-         {{index+1}}.{{ value.name }}
-      </li>
-    </ul>
+  <div class="hello text-center">
+    <h1>Find your match</h1>
+    <p>View your matches need signup</p>
+    <router-link :to="{name: 'Signup'}" class="btn btn-primary mr-2">Register</router-link>
+    <button class="btn btn-info mr-2">Learn more</button>
   </div>
 </template>
 

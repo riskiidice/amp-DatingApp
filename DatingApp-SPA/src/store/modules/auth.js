@@ -13,30 +13,32 @@ const getters = {
 
 const actions = {
   async register({commit},userForm){
-      try {
-        const status = await api.register(userForm).then(res => res.status);
-        if(status === 201){
-          router.push("/login");
-        }
-      } catch (error) {
-        console.log(error)
-        commit("setError", error);
-      }
+        const response = await api.register(userForm)
+          .then(res => { 
+             if(res.data)
+                commit("setError", null);
+                router.push("/");
+          })
+          .catch(err => { 
+              commit("setError", err.response.data);
+          });
   },
   async login({ rootState,commit }, userForm){
-      try {
-        const user = await api.login(userForm).then(res => res.data);
-        window.localStorage.setItem('token', user.token);
-        commit("setToken", user.token);
-        commit("setError", null);
-        router.push("/");
-      } catch (error) {
-        commit("setError", error);
-      }  
+        const user = await api.login(userForm)
+        .then(res =>{ 
+          window.localStorage.setItem('token', res.data.token);
+          commit("setToken", user.token);
+          commit("setError", null);
+          router.push("/");
+        })
+        .catch(err => {
+            commit("setError", err.response.data);
+        });  
   },
   logout: ({ commit }) => {
     window.localStorage.removeItem('token');
     commit("setToken", null);
+    commit("setError", null);
     router.push("/login")
   }
 };
